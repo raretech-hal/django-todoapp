@@ -1,5 +1,17 @@
-*.log
+# Python
 *.pyc
 __pycache__/
+
+# Logs
+*.log
+
+# Database (MySQL)
 db-volumes/
-db.sqlite3
+*.sql
+*.dump
+
+# Environment
+.env
+
+# OS
+.DS_Store
