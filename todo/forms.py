@@ -4,4 +4,4 @@ from .models import TodoTask
 class TodoTaskForm(forms.ModelForm):
     class Meta:
         model = TodoTask
-        fields = ['title', 'description', 'completed']
+        fields = ['title', 'description', 'completed', 'category', 'duedate']

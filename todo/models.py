@@ -13,11 +13,18 @@ class TodoTask(models.Model):
     description = models.TextField(blank=True, null=True)
     completed = models.BooleanField(default=False)
     duedate = models.DateField(blank=True, null=True) 
-    category = models.ManyToManyField(
+    category = models.ForeignKey(
         Category,
+        on_delete=models.SET_NULL,
+        null=True,
         blank=True,
         related_name="tasks",
     )
+    # category = models.ManyToManyField(
+    #     Category,
+    #     blank=True,
+    #     related_name="tasks",
+    # )
 
     def __str__(self) -> str:
         return self.title

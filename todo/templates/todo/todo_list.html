@@ -71,7 +71,7 @@
             </div>
 
             <div class="task-panel" id="taskPanel">
-                {% comment %} {% for task in tasks %}
+                {% for task in tasks %}
                     <div class="task-row">
                         <div class="task-check"></div>
                         <div class="task-content">
@@ -85,7 +85,7 @@
                 </div>
                 {% empty %}
                     <li>タスクがありません</li>
-                {% endfor %} {% endcomment %}
+                {% endfor %}
                 <div class="task-row">
                     <div class="task-check"></div>
                     <div class="task-content">
@@ -142,30 +142,35 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
                 </div>
 
-                <form id="taskForm">
+                <form method="POST" id="taskForm">
+                    {% csrf_token %}
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="taskTitleInput" class="form-label">タスク名</label>
-                            <input type="text" class="form-control" id="taskTitleInput" placeholder="例: 買い物に行く" required>
+                            <input type="text" class="form-control" id="taskTitleInput" name="title" placeholder="例: 買い物に行く" required>
                         </div>
 
                         <div class="mb-3">
                             <label for="taskMemoInput" class="form-label">メモ</label>
-                            <textarea id="taskMemoInput" class="form-control" name="taskMemoInput" rows="5" cols="33" placeholder="メモ"></textarea>
+                            <textarea id="taskMemoInput" class="form-control" name="description" rows="5" cols="33" placeholder="メモ"></textarea>
                         </div>
 
                         <div class="mb-3">
                             <label for="taskCategoryInput" class="form-label">カテゴリ</label>
-                            <select class="form-select" id="taskCategoryInput">
-                                <option value="仕事">仕事</option>
-                                <option value="個人">個人</option>
-                                <option value="学習">学習</option>
+                            <select class="form-select" id="taskCategoryInput" name="category">
+                                <option value="">未選択</option>
+                                {% for category in form.fields.category.queryset %}
+                                    <option value="{{ category.id }}">{{ category.name }}</option>
+                                    {% comment %} <option value="仕事">仕事</option>
+                                    <option value="個人">個人</option>
+                                    <option value="学習">学習</option> {% endcomment %}
+                                {% endfor %}
                             </select>
                         </div>
 
                         <div class="mb-3">
                             <label for="taskDueDateInput" class="form-label">期日</label>
-                            <input type="date" class="form-control" id="taskDueDateInput">
+                            <input type="date" class="form-control" id="taskDueDateInput" name="duedate">
                         </div>
                     </div>
 
@@ -206,18 +211,24 @@
         const taskModalEl = document.getElementById("taskModal");
         const taskModal = new bootstrap.Modal(taskModalEl);
 
-        taskForm.addEventListener("submit", function (e) {
+        {% comment %} taskForm.addEventListener("submit", function (e) {
             e.preventDefault();
 
             const title = document.getElementById("taskTitleInput").value.trim();
             const category = document.getElementById("taskCategoryInput").value;
-            const date = document.getElementById("taskDueDateInput").value;
+            const duedate = document.getElementById("taskDueDateInput").value;
+
+            const formData = new FormData(taskForm);
+
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
 
             if (!title) {
                 return;
             }
 
-            const metaText = date ? `${category} ・ ${date}` : `${category} ・ 日付未設定`;
+            const metaText = duedate ? `${category} ・ ${duedate}` : `${category} ・ 日付未設定`;
 
             const newTask = document.createElement("div");
             newTask.className = "task-row";
@@ -240,7 +251,7 @@
 
             taskForm.reset();
             taskModal.hide();
-        });
+        }); {% endcomment %}
 
         document.addEventListener("click", function (e) {
             if (e.target.classList.contains("delete")) {
