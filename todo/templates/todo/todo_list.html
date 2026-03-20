@@ -79,7 +79,17 @@
                             <div class="task-meta">学習 ・ 今日</div>
                         </div>
                     <div class="task-actions">
-                        <button class="task-btn" type="button">更新</button>
+                        <button 
+                            class="task-btn edit-btn"
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#taskModal"
+                            data-id="{{ task.id }}"
+                            data-title="{{ task.title }}"
+                            data-description="{{ task.description|default:'' }}"
+                            data-category="{% if task.category %}{{ task.category.id }}{% endif %}"
+                            data-duedate="{% if task.duedate %}{{ task.duedate|date:'Y-m-d' }}{% endif %}"
+                            >更新</button>
                         <button class="task-btn delete" type="button">削除</button>
                     </div>
                 </div>
@@ -144,6 +154,8 @@
 
                 <form method="POST" id="taskForm">
                     {% csrf_token %}
+                    <input type="hidden" id="taskIdInput" name="task_id">
+
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="taskTitleInput" class="form-label">タスク名</label>
@@ -254,6 +266,19 @@
         }); {% endcomment %}
 
         document.addEventListener("click", function (e) {
+            //更新ボタンを押した時
+            if(e.target.classList.contains("edit-btn")) {
+                const btn = e.target;
+
+                document.getElementById("taskIdInput").value = btn.dataset.id || ""
+                document.getElementById("taskTitleInput").value = btn.dataset.title || "";
+                document.getElementById("taskMemoInput").value = btn.dataset.description || "";
+                document.getElementById("taskCategoryInput").value = btn.dataset.category || "";
+                document.getElementById("taskDueDateInput").value = btn.dataset.duedate || "";
+
+                document.getElementById("taskModalLabel").textContent = "タスクを更新";
+            }
+
             if (e.target.classList.contains("delete")) {
                 const row = e.target.closest(".task-row");
                 if (row) {
