@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import TodoTask
 from .forms import TodoTaskForm
 
-# Todoリスト一覧、作成
+# Todoリスト一覧、作成、編集
 def todo_list(request):
     if request.method == 'POST':
         task_id = request.POST.get('task_id')
@@ -26,6 +26,17 @@ def todo_list(request):
         'tasks': tasks,
         'form': form,
     })
+
+# Todoリスト削除
+def todo_delete(request, task_id):
+    print("oko")
+    print(task_id)
+    if request.method == 'POST':
+        task = get_object_or_404(TodoTask, id=task_id)
+        task.delete()
+    
+    return redirect('todo_list')
+
 
 # def todo_create(request):
 #     if request.method == 'POST':

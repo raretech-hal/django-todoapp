@@ -90,7 +90,11 @@
                             data-category="{% if task.category %}{{ task.category.id }}{% endif %}"
                             data-duedate="{% if task.duedate %}{{ task.duedate|date:'Y-m-d' }}{% endif %}"
                             >更新</button>
-                        <button class="task-btn delete" type="button">削除</button>
+                        <form  method="POST" action="{% url 'todo_delete' task.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button class="task-btn delete" type="submit" onclick="return confirm('削除しますか？')">削除</button>
+                        </form>   
+                        {% comment %} <button class="task-btn delete" type="button">削除</button> {% endcomment %}
                     </div>
                 </div>
                 {% empty %}
@@ -279,12 +283,6 @@
                 document.getElementById("taskModalLabel").textContent = "タスクを更新";
             }
 
-            if (e.target.classList.contains("delete")) {
-                const row = e.target.closest(".task-row");
-                if (row) {
-                    row.remove();
-                }
-            }
         });
     </script>
 </body>
