@@ -96,11 +96,32 @@
                 <span class="nav-count">{{ overdue|length }}</span>
             </a>            
 
-            <div class="nav-section-title">カテゴリ</div>
+            <div class="nav-section-title d-flex justify-content-between align-items-center">
+                <span>カテゴリ</span>
+                <button
+                    type="button"
+                    class="btn btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#categoryModal"
+                >
+                <span style="font-size: 1.1rem;">＋</span>
+                <span>追加</span>
+            </div>
             {% for category in categories %}
                 <a href="?category_id={{ category.id }}" class="nav-item">
                     <span>{{ category.name }}</span>
                     <span class="nav-count">{{ category.task_count }}</span>
+                    <form method="POST" action="{% url 'category_delete' category.id %}" class="m-0">
+                        {% csrf_token %}
+                        <button
+                            type="submit"
+                            class="btn btn-sm btn-link text-danger p-0 text-decoration-none"
+                            title="カテゴリ削除"
+                            onclick="return confirm('カテゴリを削除しますか？')"
+                        >
+                            ×
+                        </button>
+                    </form>
                 </a>
             {% endfor %}
             {% comment %} <a href="#" class="nav-item">
@@ -257,7 +278,7 @@
                             <label for="taskCategoryInput" class="form-label">カテゴリ</label>
                             <select class="form-select" id="taskCategoryInput" name="category">
                                 <option value="">未選択</option>
-                                {% for category in form.fields.category.queryset %}
+                                {% for category in categories %}
                                     <option value="{{ category.id }}">{{ category.name }}</option>
                                     {% comment %} <option value="仕事">仕事</option>
                                     <option value="個人">個人</option>
@@ -356,6 +377,40 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">キャンセル</button>
                         <button type="submit" class="btn btn-primary">保存する</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} カテゴリー追加    モーダル {% endcomment %}
+    <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="categoryModalLabel">カテゴリを追加</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+                </div>
+
+                <form method="POST" action="{% url 'category_create' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="categoryNameInput" class="form-label">カテゴリ名</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="categoryNameInput"
+                                name="name"
+                                placeholder="例: 仕事"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">キャンセル</button>
+                        <button type="submit" class="btn btn-primary">追加する</button>
                     </div>
                 </form>
             </div>

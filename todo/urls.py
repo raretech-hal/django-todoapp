@@ -8,6 +8,8 @@ urlpatterns = [
     path('', views.todo_list, name='todo_list'),
     path('delete/<int:task_id>/', views.todo_delete, name='todo_delete'),
     path('toggle/<int:task_id>/', views.toggle_completed, name='toggle_completed'),
+    path('category/create', views.category_create, name='category_create'),
+    path('category/delete/<int:category_id>/', views.category_delete, name='category_delete'),
     ## 認証周り
     path('login/', auth_views.LoginView.as_view(
         template_name='registration/login.html'

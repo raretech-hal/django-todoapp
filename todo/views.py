@@ -49,8 +49,9 @@ def todo_list(request):
     else:
         form = TodoTaskForm()
 
-    categories = Category.objects.annotate(task_count=Count('tasks'))
-
+    categories = Category.objects.filter(user=request.user).annotate(
+        task_count=Count('tasks')
+    )
     
     return render(request, 'todo/todo_list.html', {
         'tasks': tasks,
@@ -77,6 +78,40 @@ def toggle_completed(request, task_id):
     task.completed = not task.completed
     task.save()
     return redirect('todo_list')
+
+
+
+## カテゴリー
+@login_required
+def category_create(request):
+    if request.method == 'POST':
+        name = request.POST.get('name', '').strip()
+
+        if name:
+            category, created = Category.objects.get_or_create(
+                user=request.user,
+                name=name
+            )
+            if created:
+                messages.success(request, f'カテゴリ「{name}」を追加しました。')
+            else:
+                messages.info(request, f'カテゴリ「{name}」はすでに存在します。')
+        else:
+            messages.error(request, 'カテゴリ名を入力してください。')
+
+    return redirect('todo_list')
+
+
+@login_required
+def category_delete(request, category_id):
+    category = get_object_or_404(Category, id=category_id, user=request.user)
+
+    if request.method == 'POST':
+        category.delete()
+        messages.success(request, f'カテゴリ「{category.name}」を削除しました。')
+
+    return redirect('todo_list')
+
 
 ## 認証
 def signup_view(request):
