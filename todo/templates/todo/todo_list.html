@@ -69,10 +69,10 @@
             </div>
 
             <div class="nav-section-title">一覧</div>
-            <a href="#" class="nav-item">
+            <a href="/" class="nav-item">
                 <span>🏠</span>
                 <span>タスク一覧</span>
-                <span class="nav-count">{{ tasks|length }}</span>
+                <span class="nav-count">{{ base_tasks|length }}</span>
             </a>
             {% comment %} <a href="#" class="nav-item active">
                 <span>☀️</span>
@@ -85,12 +85,12 @@
                 <span>重要</span>
                 <span class="nav-count">1</span>
             </a> {% endcomment %}
-            <a href="#" class="nav-item">
+            <a href="?status=scheduled" class="nav-item">
                 <span>📅</span>
                 <span>予定済み</span>
                 <span class="nav-count">{{ scheduled|length }}</span>
             </a>
-            <a href="#" class="nav-item">
+            <a href="?status=overdue" class="nav-item">
                 <span>⚠️</span>
                 <span>期限切れ</span>
                 <span class="nav-count">{{ overdue|length }}</span>
@@ -98,7 +98,7 @@
 
             <div class="nav-section-title">カテゴリ</div>
             {% for category in categories %}
-                <a href="#" class="nav-item">
+                <a href="?category_id={{ category.id }}" class="nav-item">
                     <span>{{ category.name }}</span>
                     <span class="nav-count">{{ category.task_count }}</span>
                 </a>

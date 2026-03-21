@@ -13,6 +13,23 @@ from django.db.models import Count
 def todo_list(request):
     tasks = TodoTask.objects.filter(user=request.user)
 
+    now = datetime.datetime.now()
+    #scheduled = tasks.filter(duedate__isnull=False, duedate__gte=now)
+    base_tasks = tasks 
+    scheduled = base_tasks.filter(duedate__isnull=False)
+    overdue = base_tasks.filter(duedate__isnull=False, duedate__lt=now)
+    
+    status = request.GET.get('status')
+    category_id = request.GET.get('category_id')
+    # ステータスで絞る
+    if status == 'scheduled':
+        tasks = tasks.filter(duedate__isnull=False)
+    elif status == 'overdue':
+        tasks = tasks.filter(duedate__lt=now)
+    # カテゴリで絞る
+    if category_id:
+        tasks = tasks.filter(category=category_id)
+    
     if request.method == 'POST':
         task_id = request.POST.get('task_id')
         if task_id: #更新処理時
@@ -34,13 +51,10 @@ def todo_list(request):
 
     categories = Category.objects.annotate(task_count=Count('tasks'))
 
-    now = datetime.datetime.now()
-    #scheduled = tasks.filter(duedate__isnull=False, duedate__gte=now)
-    scheduled = tasks.filter(duedate__isnull=False)
-    overdue = tasks.filter(duedate__isnull=False, duedate__lt=now)
     
     return render(request, 'todo/todo_list.html', {
         'tasks': tasks,
+        'base_tasks': base_tasks,
         'categories': categories,
         'scheduled': scheduled,
         'overdue': overdue,
