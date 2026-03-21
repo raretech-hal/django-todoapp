@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>新規登録</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'todo/css/registration.css' %}">
+</head>
+
+<body class="auth-body">
+    <div class="auth-layout">
+
+        <!-- 左サイド -->
+        <aside class="auth-side">
+            <div class="auth-app-name">Todo App</div>
+            <h1 class="auth-side-title">Create account</h1>
+            <p class="auth-side-text">
+                アカウントを作成して<br>
+                タスク管理を始めましょう
+            </p>
+        </aside>
+
+        <!-- メイン -->
+        <main class="auth-main">
+            <div class="auth-card">
+
+                <h1 class="auth-title">新規登録</h1>
+                <p class="auth-subtitle">ユーザー情報を入力してください</p>
+
+                <form method="post" class="auth-form">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+
+                    <button type="submit" class="auth-btn">
+                        登録する
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    すでにアカウントをお持ちですか？
+                    <a href="{% url 'login' %}">ログイン</a>
+                </div>
+
+            </div>
+        </main>
+
+    </div>
+</body>
+</html>

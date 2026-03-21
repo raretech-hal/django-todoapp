@@ -16,12 +16,38 @@
         <aside class="sidebar">
             <div class="app-name">To Do</div>
 
-            <div class="user">
-                <div class="avatar">
-                    H
+            <div class="user dropdown">
+                <div 
+                    class="user-trigger"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                >
+                    <div class="avatar">
+                        {{ request.user.username|first|upper }}
+                    </div>
+                    <span class="username">{{ request.user.username }}</span>
+                    <span class="arrow">▾</span>
+                    {% comment %} <p>ログイン中: {{ request.user.username }}</p>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit">ログアウト</button>
+                    </form> {% endcomment %}
                 </div>
-                <span class="username">hal</span>
-                <span class="arrow">▾</span>
+
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">プロフィール</a></li>
+                    <li><a class="dropdown-item" href="#">設定</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        {% comment %} <form method="POST" action="{% url 'logout' %}"> {% endcomment %}
+                        <form method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button class="dropdown-item text-danger" type="submit">
+                                ログアウト
+                            </button>
+                        </form>
+                    </li>
+                </ul>
             </div>
 
             <div class="nav-section-title">一覧</div>

@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import TodoTask
 from .forms import TodoTaskForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 
 # Todoリスト一覧、作成、編集
+# @login_required
 def todo_list(request):
     if request.method == 'POST':
         task_id = request.POST.get('task_id')
@@ -44,6 +48,17 @@ def toggle_completed(request, task_id):
     task.save()
     return redirect('todo_list')
 
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('todo_list')
+    else:
+        form = UserCreationForm()
+
+    return render(request, 'registration/signup.html', {'form': form})
 
 # def todo_create(request):
 #     if request.method == 'POST':

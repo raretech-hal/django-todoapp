@@ -239,7 +239,7 @@ body {
     font-weight: 600;
     font-size: 18px;
 
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 }
@@ -256,6 +256,25 @@ body {
 .arrow {
     color: #9ca3af;
 }
+
+.user-trigger {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 10px;
+}
+
+.user-trigger:hover {
+    background: #eef4ff;
+}
+
+
+/* サインアップ、ログイン画面 */
+
+
+
 
 @media (max-width: 900px) {
     .sidebar {

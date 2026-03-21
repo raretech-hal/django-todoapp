@@ -1,0 +1,114 @@
+/* ===== ベース ===== */
+.auth-body {
+    margin: 0;
+    background: #f3f6fb;
+    color: #1f1f1f;
+    font-family: "Segoe UI", "Yu Gothic UI", sans-serif;
+}
+
+/* ===== レイアウト ===== */
+.auth-layout {
+    min-height: 100vh;
+    display: flex;
+}
+
+.auth-side {
+    width: 320px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(8px);
+    border-right: 1px solid #e5ebf5;
+    padding: 32px 24px;
+}
+
+.auth-app-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2564cf;
+    margin-bottom: 18px;
+}
+
+.auth-side-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.auth-side-text {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+/* ===== メイン ===== */
+.auth-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== カード ===== */
+.auth-card {
+    width: 100%;
+    max-width: 460px;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid #e5ebf5;
+    border-radius: 18px;
+    padding: 32px;
+}
+
+.auth-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.auth-subtitle {
+    color: #64748b;
+    margin-bottom: 20px;
+}
+
+/* ===== フォーム ===== */
+.auth-form p {
+    margin-bottom: 16px;
+}
+
+.auth-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.auth-form input {
+    width: 100%;
+    border: 1px solid #d7e1f0;
+    border-radius: 12px;
+    padding: 10px;
+}
+
+.auth-form input:focus {
+    border-color: #2564cf;
+}
+
+/* ===== ボタン ===== */
+.auth-btn {
+    width: 100%;
+    background: #2564cf;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.auth-btn:hover {
+    background: #1f56b3;
+}
+
+/* ===== フッター ===== */
+.auth-footer {
+    margin-top: 16px;
+    text-align: center;
+}
+
+.auth-footer a {
+    color: #2564cf;
+    font-weight: 600;
+}
