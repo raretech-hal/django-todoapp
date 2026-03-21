@@ -2,7 +2,15 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
-class Category(models.Model):
+class ModelBaseClass(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+
+    class Meta:
+        abstract = True
+
+
+class Category(ModelBaseClass):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -16,7 +24,7 @@ class Category(models.Model):
         return self.name
 
 
-class TodoTask(models.Model):
+class TodoTask(ModelBaseClass):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -44,7 +52,7 @@ class TodoTask(models.Model):
     def __str__(self) -> str:
         return self.title
     
-class Profile(models.Model):
+class Profile(ModelBaseClass):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     display_name = models.CharField("表示名", max_length=100, blank=True)
 
