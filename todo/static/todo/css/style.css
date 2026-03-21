@@ -221,6 +221,42 @@ body {
     border-radius: 18px;
 }
 
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 丸アイコン */
+.avatar {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #d94a3a; /* サーモンっぽい色 */
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* 名前 */
+.username {
+    font-size: 18px;
+    color: #1f1f1f; /* ← 濃く */
+    font-weight: 500; /* ← 少し太く */
+}
+
+/* 矢印 */
+.arrow {
+    color: #9ca3af;
+}
+
 @media (max-width: 900px) {
     .sidebar {
         display: none;

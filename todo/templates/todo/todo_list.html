@@ -16,6 +16,14 @@
         <aside class="sidebar">
             <div class="app-name">To Do</div>
 
+            <div class="user">
+                <div class="avatar">
+                    H
+                </div>
+                <span class="username">hal</span>
+                <span class="arrow">▾</span>
+            </div>
+
             <div class="nav-section-title">一覧</div>
             <a href="#" class="nav-item active">
                 <span>☀️</span>
@@ -62,7 +70,7 @@
             <div class="topbar">
                 <div>
                     <h1 class="page-title">My Day</h1>
-                    <div class="page-subtitle">2026年3月18日 水曜日</div>
+                    <div class="page-subtitle">{% now "Y/m/d l" %}</div>
                 </div>
                 <button class="add-button" data-bs-toggle="modal" data-bs-target="#taskModal" type="button">
                     ＋ 新しいタスク
@@ -89,9 +97,9 @@
                             <div class="task-meta">
                                 <span>カテゴリ:</span>
                                 {% if task.category %}{{ task.category.name }}{% else %}未分類{% endif %}
-                                ・
+                                &emsp;
                                 <span>期日:</span>
-                                {% if task.duedate %}{{ task.duedate }}{% else %}日付未設定{% endif %}
+                                {% if task.duedate %}{{ task.duedate|date:"Y/m/d" }}{% else %}日付未設定{% endif %}
                             </div>
                         </div>
                     <div class="task-actions">
