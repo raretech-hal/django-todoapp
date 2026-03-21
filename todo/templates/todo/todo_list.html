@@ -130,7 +130,14 @@
 
             <div class="task-panel" id="taskPanel">
                 {% for task in tasks %}
-                    <div class="task-row">
+                    <div 
+                        class="task-row"
+                        data-id="{{ task.id }}"
+                        data-title="{{ task.title }}"
+                        data-description="{{ task.description|default:'' }}"
+                        data-category="{% if task.category %}{{ task.category.id }}{% endif %}"
+                        data-duedate="{% if task.duedate %}{{ task.duedate|date:'Y-m-d' }}{% endif %}"                    
+                    >
                         {% comment %} <div class="task-check"></div> {% endcomment %}
                         <form method="POST" action="{% url 'toggle_completed' task.id %}" style="margin:0;">
                             {% csrf_token %}
@@ -211,7 +218,7 @@
                     </div>
                 </div>
 
-                <button class="new-task-row"
+                <button class="new-task-row add-button"
                         data-bs-toggle="modal"
                         data-bs-target="#taskModal"
                         type="button">
@@ -267,7 +274,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">キャンセル</button>
-                        <button type="submit" class="btn btn-primary">追加する</button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">追加する</button>
                     </div>
                 </form>
             </div>
@@ -426,20 +433,46 @@
         }); {% endcomment %}
 
         document.addEventListener("click", function (e) {
-            //更新ボタンを押した時
-            if(e.target.classList.contains("edit-btn")) {
-                const btn = e.target;
+            // 新規追加ボタン、クリック時にモーダルの入力値が残っていればクリア
+            if (e.target.classList.contains("add-button")) {
+                taskForm.reset();
+                document.getElementById("taskIdInput").value = "";
+                document.getElementById("taskModalLabel").textContent = "新しいタスクを追加";
+                document.getElementById("submitBtn").textContent = "追加する";
+            }
 
-                document.getElementById("taskIdInput").value = btn.dataset.id || ""
-                document.getElementById("taskTitleInput").value = btn.dataset.title || "";
-                document.getElementById("taskMemoInput").value = btn.dataset.description || "";
-                document.getElementById("taskCategoryInput").value = btn.dataset.category || "";
-                document.getElementById("taskDueDateInput").value = btn.dataset.duedate || "";
+            // 更新ボタン
+            if (e.target.classList.contains("edit-btn")) {
+                openEditModal(e.target.dataset);
+            }
 
-                document.getElementById("taskModalLabel").textContent = "タスクを更新";
+            // ② task-rowクリック
+            const row = e.target.closest(".task-row");
+            if (row) {
+
+                // チェックや削除ボタン押したときは無視
+                if (e.target.closest(".task-check") || e.target.closest(".task-actions")) {
+                    return;
+                }
+
+                openEditModal(row.dataset);
             }
 
         });
+
+        function openEditModal(data) {
+            document.getElementById("taskIdInput").value = data.id || "";
+            document.getElementById("taskTitleInput").value = data.title || "";
+            document.getElementById("taskMemoInput").value = data.description || "";
+            document.getElementById("taskCategoryInput").value = data.category || "";
+            document.getElementById("taskDueDateInput").value = data.duedate || "";
+
+            document.getElementById("taskModalLabel").textContent = "タスクを更新";
+            document.getElementById("submitBtn").textContent = "更新する";
+
+            taskModal.show();
+        }        
+
     </script>
 </body>
 
