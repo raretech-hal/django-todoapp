@@ -11,23 +11,27 @@ from django.db.models import Count
 # Todoリスト一覧、作成、編集
 @login_required
 def todo_list(request):
+    tasks = TodoTask.objects.filter(user=request.user)
+
     if request.method == 'POST':
         task_id = request.POST.get('task_id')
         if task_id: #更新処理時
-            task = get_object_or_404(TodoTask, id=task_id)
+            task = get_object_or_404(TodoTask, id=task_id, user=request.user)
             form = TodoTaskForm(request.POST, instance=task)
         else: #新規作成時
             form = TodoTaskForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            todo = form.save(commit=False) #commit=falseとして、この時点ではまだ保存しない
+            if not task_id:
+                todo.user = request.user
+            todo.save()
             return redirect('todo_list')
         else:
             print(form.errors)
     else:
         form = TodoTaskForm()
 
-    tasks = TodoTask.objects.all()
     categories = Category.objects.annotate(task_count=Count('tasks'))
 
     now = datetime.datetime.now()
@@ -48,14 +52,14 @@ def todo_delete(request, task_id):
     print("oko")
     print(task_id)
     if request.method == 'POST':
-        task = get_object_or_404(TodoTask, id=task_id)
+        task = get_object_or_404(TodoTask, id=task_id, user=request.user)
         task.delete()
     
     return redirect('todo_list')
 
 # Todoのcompletedの更新
 def toggle_completed(request, task_id):
-    task= get_object_or_404(TodoTask, id=task_id)
+    task= get_object_or_404(TodoTask, id=task_id, user=request.user)
     task.completed = not task.completed
     task.save()
     return redirect('todo_list')

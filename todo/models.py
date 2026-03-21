@@ -10,6 +10,13 @@ class Category(models.Model):
 
 
 class TodoTask(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="todo_tasks",
+        null=True,
+        blank=True,
+    )
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
     completed = models.BooleanField(default=False)
