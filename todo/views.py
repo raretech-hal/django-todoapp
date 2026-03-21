@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import TodoTask
-from .forms import TodoTaskForm
+from .forms import TodoTaskForm, ProfileEditForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 # Todoリスト一覧、作成、編集
-# @login_required
+@login_required
 def todo_list(request):
     if request.method == 'POST':
         task_id = request.POST.get('task_id')
@@ -48,6 +49,7 @@ def toggle_completed(request, task_id):
     task.save()
     return redirect('todo_list')
 
+## 認証
 def signup_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -59,6 +61,21 @@ def signup_view(request):
         form = UserCreationForm()
 
     return render(request, 'registration/signup.html', {'form': form})
+
+@login_required
+def profile_edit(request):
+    if request.method == 'POST':
+        form = ProfileEditForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'プロフィールを更新しました。')
+        else:
+            print(form.errors)
+            messages.error(request, f'プロフィールを更新できませんでした: {form.errors}')
+
+    return redirect('todo_list')
+
 
 # def todo_create(request):
 #     if request.method == 'POST':

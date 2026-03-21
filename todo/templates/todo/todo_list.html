@@ -23,9 +23,19 @@
                     aria-expanded="false"
                 >
                     <div class="avatar">
-                        {{ request.user.username|first|upper }}
+                        {% if request.user.profile.display_name %}
+                            {{ request.user.profile.display_name|first|upper }}
+                        {% else %}
+                            {{ request.user.username|first|upper }}
+                        {% endif %}
                     </div>
-                    <span class="username">{{ request.user.username }}</span>
+                    <span class="username">
+                        {% if request.user.profile.display_name %}
+                            {{ request.user.profile.display_name }}
+                        {% else %}
+                            {{ request.user.username }}
+                        {% endif %}
+                    </span>
                     <span class="arrow">▾</span>
                     {% comment %} <p>ログイン中: {{ request.user.username }}</p>
                     <form method="post" action="{% url 'logout' %}">
@@ -35,7 +45,16 @@
                 </div>
 
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#">プロフィール</a></li>
+                    <li>
+                        <button
+                            type="button"
+                            class="dropdown-item"
+                            data-bs-toggle="modal"
+                            data-bs-target="#profileModal"
+                        >
+                            プロフィール
+                        </button>
+                    </li>
                     <li><a class="dropdown-item" href="#">設定</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li>
@@ -243,6 +262,87 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">キャンセル</button>
                         <button type="submit" class="btn btn-primary">追加する</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} プロフィール編集モーダル {% endcomment %}
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileModalLabel">プロフィール編集</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+                </div>
+
+                <form method="POST" action="{% url 'profile_edit' %}">
+                {% comment %} <form method="POST" action=""> {% endcomment %}
+                    {% csrf_token %}
+
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="profileUsernameInput" class="form-label">表示名</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="profileDisplayNameInput"
+                                name="display_name"
+                                value="{{ request.user.profile.display_name }}"
+                            >
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="profileUsernameInput" class="form-label">ユーザー名</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                style="background-color: #e9ecef; cursor: not-allowed;"
+                                id="profileUsernameInput"
+                                name="username"
+                                value="{{ request.user.username }}"
+                                readonly
+                            >
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="profileEmailInput" class="form-label">メールアドレス</label>
+                            <input
+                                type="email"
+                                class="form-control"
+                                id="profileEmailInput"
+                                name="email"
+                                value="{{ request.user.email }}"
+                            >
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="profileFirstNameInput" class="form-label">名</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="profileFirstNameInput"
+                                name="first_name"
+                                value="{{ request.user.first_name }}"
+                            >
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="profileLastNameInput" class="form-label">姓</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="profileLastNameInput"
+                                name="last_name"
+                                value="{{ request.user.last_name }}"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">キャンセル</button>
+                        <button type="submit" class="btn btn-primary">保存する</button>
                     </div>
                 </form>
             </div>
