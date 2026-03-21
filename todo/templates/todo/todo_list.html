@@ -64,7 +64,6 @@
                     <h1 class="page-title">My Day</h1>
                     <div class="page-subtitle">2026年3月18日 水曜日</div>
                 </div>
-
                 <button class="add-button" data-bs-toggle="modal" data-bs-target="#taskModal" type="button">
                     ＋ 新しいタスク
                 </button>
@@ -73,10 +72,27 @@
             <div class="task-panel" id="taskPanel">
                 {% for task in tasks %}
                     <div class="task-row">
-                        <div class="task-check"></div>
+                        {% comment %} <div class="task-check"></div> {% endcomment %}
+                        <form method="POST" action="{% url 'toggle_completed' task.id %}" style="margin:0;">
+                            {% csrf_token %}
+                            <button
+                                type="submit"
+                                class="task-check {% if task.completed %}completed{% endif %}"
+                                aria-label="完了切り替え"
+                            ></button>
+                        </form>                        
                         <div class="task-content">
-                            <div class="task-title">{{ task.title }}</div>
-                            <div class="task-meta">学習 ・ 今日</div>
+                            <div class="task-title {% if task.completed %}completed{% endif %}">
+                                {{ task.title }}
+                            </div>
+
+                            <div class="task-meta">
+                                <span>カテゴリ:</span>
+                                {% if task.category %}{{ task.category.name }}{% else %}未分類{% endif %}
+                                ・
+                                <span>期日:</span>
+                                {% if task.duedate %}{{ task.duedate }}{% else %}日付未設定{% endif %}
+                            </div>
                         </div>
                     <div class="task-actions">
                         <button 

@@ -207,6 +207,12 @@ body {
     cursor: pointer;
 }
 
+.task-meta span {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    margin-right: 2px;
+}
+
 .new-task-row:hover {
     background: #f3f8ff;
 }

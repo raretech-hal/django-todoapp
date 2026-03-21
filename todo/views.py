@@ -37,6 +37,13 @@ def todo_delete(request, task_id):
     
     return redirect('todo_list')
 
+# Todoのcompletedの更新
+def toggle_completed(request, task_id):
+    task= get_object_or_404(TodoTask, id=task_id)
+    task.completed = not task.completed
+    task.save()
+    return redirect('todo_list')
+
 
 # def todo_create(request):
 #     if request.method == 'POST':
