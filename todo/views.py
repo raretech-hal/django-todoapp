@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import TodoTask
+from .models import TodoTask, Category
 from .forms import TodoTaskForm, ProfileEditForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+import datetime
+from django.db.models import Count
 
 # Todoリスト一覧、作成、編集
 @login_required
@@ -26,9 +28,18 @@ def todo_list(request):
         form = TodoTaskForm()
 
     tasks = TodoTask.objects.all()
+    categories = Category.objects.annotate(task_count=Count('tasks'))
+
+    now = datetime.datetime.now()
+    #scheduled = tasks.filter(duedate__isnull=False, duedate__gte=now)
+    scheduled = tasks.filter(duedate__isnull=False)
+    overdue = tasks.filter(duedate__isnull=False, duedate__lt=now)
     
     return render(request, 'todo/todo_list.html', {
         'tasks': tasks,
+        'categories': categories,
+        'scheduled': scheduled,
+        'overdue': overdue,
         'form': form,
     })
 

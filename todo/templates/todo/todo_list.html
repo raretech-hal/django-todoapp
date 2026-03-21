@@ -55,10 +55,9 @@
                             プロフィール
                         </button>
                     </li>
-                    <li><a class="dropdown-item" href="#">設定</a></li>
+                    {% comment %} <li><a class="dropdown-item" href="#">設定</a></li> {% endcomment %}
                     <li><hr class="dropdown-divider"></li>
                     <li>
-                        {% comment %} <form method="POST" action="{% url 'logout' %}"> {% endcomment %}
                         <form method="POST" action="{% url 'logout' %}">
                             {% csrf_token %}
                             <button class="dropdown-item text-danger" type="submit">
@@ -70,34 +69,41 @@
             </div>
 
             <div class="nav-section-title">一覧</div>
-            <a href="#" class="nav-item active">
+            <a href="#" class="nav-item">
+                <span>🏠</span>
+                <span>タスク一覧</span>
+                <span class="nav-count">{{ tasks|length }}</span>
+            </a>
+            {% comment %} <a href="#" class="nav-item active">
                 <span>☀️</span>
                 <span>My Day</span>
                 <span class="nav-count">3</span>
-            </a>
-            <a href="#" class="nav-item">
+            </a> {% endcomment %}
+
+            {% comment %} <a href="#" class="nav-item">
                 <span>⭐</span>
                 <span>重要</span>
                 <span class="nav-count">1</span>
-            </a>
+            </a> {% endcomment %}
             <a href="#" class="nav-item">
                 <span>📅</span>
                 <span>予定済み</span>
-                <span class="nav-count">2</span>
+                <span class="nav-count">{{ scheduled|length }}</span>
             </a>
             <a href="#" class="nav-item">
                 <span>⚠️</span>
                 <span>期限切れ</span>
-                <span class="nav-count">2</span>
+                <span class="nav-count">{{ overdue|length }}</span>
             </a>            
-            <a href="#" class="nav-item">
-                <span>🏠</span>
-                <span>タスク</span>
-                <span class="nav-count">5</span>
-            </a>
 
             <div class="nav-section-title">カテゴリ</div>
-            <a href="#" class="nav-item">
+            {% for category in categories %}
+                <a href="#" class="nav-item">
+                    <span>{{ category.name }}</span>
+                    <span class="nav-count">{{ category.task_count }}</span>
+                </a>
+            {% endfor %}
+            {% comment %} <a href="#" class="nav-item">
                 <span>📘</span>
                 <span>仕事</span>
             </a>
@@ -108,7 +114,7 @@
             <a href="#" class="nav-item">
                 <span>📙</span>
                 <span>学習</span>
-            </a>
+            </a> {% endcomment %}
         </aside>
 
         <main class="main-content">
@@ -273,7 +279,7 @@
         <div class="modal-dialog">
             <div class="modal-content border-0 shadow">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="profileModalLabel">プロフィール編集</h5>
+                    <h5 class="modal-title" id="profileModalLabel">プロフィール</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
                 </div>
 
