@@ -19,6 +19,52 @@
 * `djangopj/settings.py`: DB 接続設定（MySQL）
 * `todo/`: アプリ本体
 
+## Model図
+※ USERはDjangoデフォルトモデルを使用
+```mermaid
+erDiagram
+
+    USER {
+        int id
+        string username
+    }
+
+    PROFILE {
+        int id
+        int user_id
+        string display_name
+        datetime created_at
+        datetime updated_at
+    }
+
+    CATEGORY {
+        int id
+        int user_id
+        string name
+        datetime created_at
+        datetime updated_at
+    }
+
+    TODOTASK {
+        int id
+        int user_id
+        int category_id
+        string title
+        text description
+        boolean completed
+        date duedate
+        datetime created_at
+        datetime updated_at
+    }
+
+    %% Relationships
+    USER ||--o{ CATEGORY : has
+    USER ||--o{ TODOTASK : has
+    USER ||--|| PROFILE : has
+
+    CATEGORY ||--o{ TODOTASK : has
+```
+
 ---
 
 ## 起動方法（Docker使用時）
