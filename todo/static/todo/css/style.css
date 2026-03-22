@@ -1,0 +1,292 @@
+body {
+    margin: 0;
+    background: #f3f6fb;
+    color: #1f1f1f;
+    font-family: "Segoe UI", "Yu Gothic UI", sans-serif;
+}
+
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 280px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(8px);
+    border-right: 1px solid #e5ebf5;
+    padding: 24px 18px;
+}
+
+.app-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2564cf;
+    margin-bottom: 24px;
+}
+
+.nav-section-title {
+    font-size: 0.78rem;
+    color: #6b7280;
+    margin: 18px 0 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    color: #334155;
+    text-decoration: none;
+    margin-bottom: 6px;
+}
+
+.nav-item:hover {
+    background: #eef4ff;
+}
+
+.nav-item.active {
+    background: #e8f0fe;
+    color: #174ea6;
+    font-weight: 600;
+}
+
+.nav-count {
+    margin-left: auto;
+    font-size: 0.8rem;
+    color: #64748b;
+    background: #f8fafc;
+    border-radius: 999px;
+    padding: 2px 8px;
+}
+
+.main-content {
+    flex: 1;
+    padding: 40px 48px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.page-subtitle {
+    color: #64748b;
+    margin-top: 6px;
+    font-size: 0.95rem;
+}
+
+.add-button {
+    border: none;
+    background: #2564cf;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
+.add-button:hover {
+    background: #1f56b3;
+}
+
+.task-panel {
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid #e5ebf5;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.task-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.task-row:last-child {
+    border-bottom: none;
+}
+
+.task-row:hover {
+    background: #f8fbff;
+}
+
+.task-check {
+    width: 22px;
+    height: 22px;
+    border: 2px solid #9bb4df;
+    border-radius: 50%;
+    background: white;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.task-check.completed {
+    background: #2564cf;
+    border-color: #2564cf;
+    position: relative;
+}
+
+.task-check.completed::after {
+    content: "✓";
+    color: white;
+    font-size: 0.85rem;
+    position: absolute;
+    top: -1px;
+    left: 10%;
+}
+
+.task-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.task-title {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: #1e293b;
+}
+
+.task-title.completed {
+    color: #94a3b8;
+    text-decoration: line-through;
+}
+
+.task-meta {
+    font-size: 0.84rem;
+    color: #64748b;
+}
+
+.task-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.task-btn {
+    border: 1px solid #d7e1f0;
+    background: white;
+    color: #475569;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.82rem;
+}
+
+.task-btn:hover {
+    background: #f8fafc;
+}
+
+.task-btn.delete {
+    color: #b42318;
+}
+
+.new-task-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px;
+    color: #2564cf;
+    font-weight: 500;
+    background: #fafcff;
+    width: 100%;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+}
+
+.task-meta span {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    margin-right: 2px;
+}
+
+.new-task-row:hover {
+    background: #f3f8ff;
+}
+
+.modal-content {
+    border-radius: 18px;
+}
+
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #d94a3a;
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.username {
+    font-size: 18px;
+    color: #1f1f1f;
+    font-weight: 500;
+}
+
+.arrow {
+    color: #9ca3af;
+}
+
+.user-trigger {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 10px;
+}
+
+.user-trigger:hover {
+    background: #eef4ff;
+}
+
+
+@media (max-width: 900px) {
+    .sidebar {
+        display: none;
+    }
+
+    .main-content {
+        padding: 24px 18px;
+    }
+
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .task-row {
+        flex-wrap: wrap;
+    }
+
+    .task-actions {
+        margin-left: 36px;
+    }
+}

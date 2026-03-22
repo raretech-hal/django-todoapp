@@ -1,0 +1,26 @@
+from django.contrib import admin
+from django.urls import path
+from . import views
+from django.contrib.auth import views as auth_views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.todo_list, name='todo_list'),
+    path('todo/upsert/', views.todo_upsert, name='todo_upsert'),
+    path('todo/delete/<int:task_id>/', views.todo_delete, name='todo_delete'),
+    path('todo/toggle/<int:task_id>/', views.toggle_completed, name='toggle_completed'),
+    path('category/create', views.category_create, name='category_create'),
+    path('category/delete/<int:category_id>/', views.category_delete, name='category_delete'),
+    ## 認証周り
+    path('login/', auth_views.LoginView.as_view(
+        template_name='registration/login.html'
+    ), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('signup/', views.signup_view, name='signup'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('profile/edit/', views.profile_edit, name='profile_edit'),
+    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+]
