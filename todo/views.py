@@ -8,19 +8,18 @@ from django.contrib import messages
 import datetime
 from django.db.models import Count
 
-# Todoリスト一覧、作成、編集
+# Todo一覧
 @login_required
 def todo_list(request):
     tasks = TodoTask.objects.filter(user=request.user)
 
     now = datetime.datetime.now()
-    #scheduled = tasks.filter(duedate__isnull=False, duedate__gte=now)
     base_tasks = tasks 
     scheduled = base_tasks.filter(duedate__isnull=False)
     overdue = base_tasks.filter(duedate__isnull=False, duedate__lt=now)
-    
     status = request.GET.get('status')
     category_id = request.GET.get('category_id')
+
     # ステータスで絞る
     if status == 'scheduled':
         tasks = tasks.filter(duedate__isnull=False)
@@ -30,24 +29,7 @@ def todo_list(request):
     if category_id:
         tasks = tasks.filter(category=category_id)
     
-    if request.method == 'POST':
-        task_id = request.POST.get('task_id')
-        if task_id: #更新処理時
-            task = get_object_or_404(TodoTask, id=task_id, user=request.user)
-            form = TodoTaskForm(request.POST, instance=task)
-        else: #新規作成時
-            form = TodoTaskForm(request.POST)
-
-        if form.is_valid():
-            todo = form.save(commit=False) #commit=falseとして、この時点ではまだ保存しない
-            if not task_id:
-                todo.user = request.user
-            todo.save()
-            return redirect('todo_list')
-        else:
-            print(form.errors)
-    else:
-        form = TodoTaskForm()
+    form = TodoTaskForm()
 
     categories = Category.objects.filter(user=request.user).annotate(
         task_count=Count('tasks')
@@ -62,7 +44,27 @@ def todo_list(request):
         'form': form,
     })
 
-# Todoリスト削除
+
+# Todo作成 / 更新
+@login_required
+def todo_upsert(request):
+    if request.method != 'POST':
+        return redirect('todo_list')
+
+    task_id = request.POST.get('task_id')
+    task = get_object_or_404(TodoTask, id=task_id, user=request.user) if task_id else None
+    form = TodoTaskForm(request.POST, instance=task)
+
+    if form.is_valid():
+        todo = form.save(commit=False)
+        if task is None:
+            todo.user = request.user
+        todo.save()
+
+    return redirect('todo_list')
+
+
+# Todo削除
 def todo_delete(request, task_id):
     print("oko")
     print(task_id)
@@ -72,7 +74,8 @@ def todo_delete(request, task_id):
     
     return redirect('todo_list')
 
-# Todoのcompletedの更新
+
+# Todoの完了・未完了の切替え
 def toggle_completed(request, task_id):
     task= get_object_or_404(TodoTask, id=task_id, user=request.user)
     task.completed = not task.completed
@@ -80,8 +83,7 @@ def toggle_completed(request, task_id):
     return redirect('todo_list')
 
 
-
-## カテゴリー
+# カテゴリ作成
 @login_required
 def category_create(request):
     if request.method == 'POST':
@@ -102,6 +104,7 @@ def category_create(request):
     return redirect('todo_list')
 
 
+# カテゴリ削除
 @login_required
 def category_delete(request, category_id):
     category = get_object_or_404(Category, id=category_id, user=request.user)
@@ -113,7 +116,7 @@ def category_delete(request, category_id):
     return redirect('todo_list')
 
 
-## 認証
+# サインアップ
 def signup_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -126,6 +129,8 @@ def signup_view(request):
 
     return render(request, 'registration/signup.html', {'form': form})
 
+
+# プロフィール編集
 @login_required
 def profile_edit(request):
     if request.method == 'POST':
@@ -139,14 +144,3 @@ def profile_edit(request):
             messages.error(request, f'プロフィールを更新できませんでした: {form.errors}')
 
     return redirect('todo_list')
-
-
-# def todo_create(request):
-#     if request.method == 'POST':
-#         form = TodoTaskForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('todo_list')
-#     else:
-#         form = TodoTaskForm()
-#     return render(request, 'todo/todo_list.html', {'form': form})

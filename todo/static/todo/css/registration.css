@@ -1,4 +1,3 @@
-/* ===== ベース ===== */
 .auth-body {
     margin: 0;
     background: #f3f6fb;
@@ -6,7 +5,6 @@
     font-family: "Segoe UI", "Yu Gothic UI", sans-serif;
 }
 
-/* ===== レイアウト ===== */
 .auth-layout {
     min-height: 100vh;
     display: flex;
@@ -37,7 +35,6 @@
     font-size: 0.95rem;
 }
 
-/* ===== メイン ===== */
 .auth-main {
     flex: 1;
     display: flex;
@@ -45,7 +42,6 @@
     justify-content: center;
 }
 
-/* ===== カード ===== */
 .auth-card {
     width: 100%;
     max-width: 460px;
@@ -87,7 +83,6 @@
     border-color: #2564cf;
 }
 
-/* ===== ボタン ===== */
 .auth-btn {
     width: 100%;
     background: #2564cf;
@@ -102,7 +97,6 @@
     background: #1f56b3;
 }
 
-/* ===== フッター ===== */
 .auth-footer {
     margin-top: 16px;
     text-align: center;

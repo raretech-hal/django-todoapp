@@ -228,13 +228,12 @@ body {
     gap: 10px;
 }
 
-/* 丸アイコン */
 .avatar {
     position: relative;
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    background: #d94a3a; /* サーモンっぽい色 */
+    background: #d94a3a;
     color: white;
     font-weight: 600;
     font-size: 18px;
@@ -244,15 +243,12 @@ body {
     justify-content: center;
 }
 
-
-/* 名前 */
 .username {
     font-size: 18px;
-    color: #1f1f1f; /* ← 濃く */
-    font-weight: 500; /* ← 少し太く */
+    color: #1f1f1f;
+    font-weight: 500;
 }
 
-/* 矢印 */
 .arrow {
     color: #9ca3af;
 }
@@ -269,11 +265,6 @@ body {
 .user-trigger:hover {
     background: #eef4ff;
 }
-
-
-/* サインアップ、ログイン画面 */
-
-
 
 
 @media (max-width: 900px) {

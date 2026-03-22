@@ -6,8 +6,9 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.todo_list, name='todo_list'),
-    path('delete/<int:task_id>/', views.todo_delete, name='todo_delete'),
-    path('toggle/<int:task_id>/', views.toggle_completed, name='toggle_completed'),
+    path('todo/upsert/', views.todo_upsert, name='todo_upsert'),
+    path('todo/delete/<int:task_id>/', views.todo_delete, name='todo_delete'),
+    path('todo/toggle/<int:task_id>/', views.toggle_completed, name='toggle_completed'),
     path('category/create', views.category_create, name='category_create'),
     path('category/delete/<int:category_id>/', views.category_delete, name='category_delete'),
     ## 認証周り
